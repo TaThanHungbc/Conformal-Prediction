@@ -1,0 +1,13 @@
+import torch
+
+DATA_DIR = "data"
+TRAIN_DIR = "data/train/train"
+TEST_DIR = "data/test/test"
+SAMPLE_SUB = "data/sampleSubmission.csv"
+
+BATCH_SIZE = 32
+EPOCHS = 5
+LR = 0.0005
+ALPHA = 0.05  # Sai số cho phép 5% -> Độ tin cậy 95%
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+MODEL_SAVE_PATH = "outputs/fruit_resnet18"
