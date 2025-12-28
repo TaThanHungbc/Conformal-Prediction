@@ -8,11 +8,11 @@ SAMPLE_SUB = "data/sampleSubmission.csv"
 BATCH_SIZE = 32
 EPOCHS = 5
 LR = 0.0005
-ALPHA = 0.01  # Sai số cho phép 1% -> Độ tin cậy 99%
+ALPHA = 0.05  # Sai số cho phép 5% -> Độ tin cậy 95%
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MODEL_SAVE_PATH = "outputs/fruit_resnet18"
 
-MODEL_FILE_NAME = "fruit_resnet18_alpha_001.pth"
+MODEL_FILE_NAME = "fruit_resnet18_alpha_0001.pth"
 
 MODEL_DIR = "models"
-QHAT_FILE = "qhat001.txt"
+QHAT_FILE = "qhat0001.txt"
