@@ -31,6 +31,8 @@ def optimize_temperature(logits_tensor, labels_tensor, init_T=1.0, max_iter=50):
     # ensure T >= 0.05
     return max(0.05, T_opt)
 
+SOFTEN = 3
+
 def get_qhat(model, cal_loader):
     """
     Calibrate using calibration loader.
@@ -70,6 +72,9 @@ def get_qhat(model, cal_loader):
     except Exception as e:
         print(f"[WARN] Temperature optimization failed: {e} - sẽ dùng T=1.0")
         T_opt = 1.0
+
+    T_opt = T_opt * SOFTEN
+    print(f"[INFO] Softened temprature T = {T_opt:.4f}")
 
     # compute scaled probabilities (numpy)
     with torch.no_grad():

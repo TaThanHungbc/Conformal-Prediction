@@ -38,9 +38,11 @@ try:
 except Exception:
     REMBG_AVAILABLE = False
 
+import src.config as cfg
+
 # ---------- Configuration (edit if needed) ----------
-MODEL_FILE_NAME = os.environ.get("MODEL_FILE_NAME", "models/fruit_resnet18_1.pth")
-QHAT_FILE = os.environ.get("QHAT_FILE", "outputs/qhat.txt")
+MODEL_FILE_NAME = os.environ.get("MODEL_FILE_NAME", os.path.join("models", cfg.MODEL_FILE_NAME))
+QHAT_FILE = os.environ.get("QHAT_FILE", os.path.join("outputs", cfg.QHAT_FILE))
 TRAIN_DIR = os.environ.get("TRAIN_DIR", "data/train/train")  # folder with subfolders per class
 IMG_SIZE = int(os.environ.get("IMG_SIZE", "224"))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -238,6 +240,11 @@ async def predict_endpoint(image: UploadFile = File(...)):
     # conformal set: keep classes with prob >= 1 - qhat
     threshold = 1.0 - float(QHAT)
     pred_idx = [int(i) for i in np.where(probs >= threshold)[0].tolist()]
+    
+    # conformal set must not be empty
+    if len(pred_idx) == 0:
+        pred_idx = [int(np.argmax(probs))]
+        logger.info("Conformal set empty, fallback to argmax.")
 
     # prepare lists (sorted)
     items = []

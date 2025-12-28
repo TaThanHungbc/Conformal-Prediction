@@ -12,7 +12,7 @@ ALPHA = 0.01  # Sai số cho phép 1% -> Độ tin cậy 99%
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MODEL_SAVE_PATH = "outputs/fruit_resnet18"
 
-MODEL_FILE_NAME = "fruit_resnet18_1.pth"
+MODEL_FILE_NAME = "fruit_resnet18_alpha_001.pth"
 
 MODEL_DIR = "models"
-QHAT_FILE = "qhat.txt"
+QHAT_FILE = "qhat001.txt"
