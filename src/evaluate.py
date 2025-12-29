@@ -16,8 +16,8 @@ def evaluate_coverage(df_results):
 
         coverage = compare.apply(check_cov, axis=1).mean()
         print("\n" + "="*30)
-        print(f"Coverage thực tế: {coverage:.2%}")
-        print(f"Kích thước Set TB: {df_results['set_size'].mean():.2f}")
+        print(f"Actual coverage: {coverage:.2%}")
+        print(f"AVG set size: {df_results['set_size'].mean():.2f}")
         print("="*30)
     except Exception as e:
-        print(f"[!] Lỗi khi đánh giá: {e}")
+        print(f"[ERROR] Evaluation error: {e}")

@@ -1,11 +1,10 @@
-# calibrate.py   (Thay thế toàn bộ file bằng nội dung này)
 import torch
 import torch.nn.functional as F
 import numpy as np
 from tqdm import tqdm
 import src.config as config
 
-# giữ mềm nhẹ: default = 1.0 (không nhân mạnh)
+# Soften: default = 1.0 (optional)
 SOFTEN = 1.0
 
 def optimize_temperature(logits_tensor, labels_tensor, init_s=0.0, max_iter=200):
@@ -70,11 +69,11 @@ def get_qhat(model, cal_loader):
 
     # Temperature scaling (T >= 1 enforced)
     try:
-        print("[PROGRESS] Tối ưu temperature bằng LBFGS (post-hoc calibration) với ràng buộc T>=1...")
+        print("[PROGRESS] Optimizing temperature using LBFGS (post-hoc calibration) with constraint T>=1...")
         T_opt = optimize_temperature(logits_all, labels_all, init_s=0.0, max_iter=200)
         print(f"[INFO] Found temperature T = {T_opt:.4f}")
     except Exception as e:
-        print(f"[WARN] Temperature optimization failed: {e} - sẽ dùng T=1.0")
+        print(f"[WARN] Temperature optimization failed: {e} - Using T = 1.0")
         T_opt = 1.0
 
     # Apply optional small SOFTEN (default 1.0)

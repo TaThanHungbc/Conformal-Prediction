@@ -5,7 +5,7 @@ import numpy as np
 import src.config as config
 
 def get_loaders():
-    # Augmentations cho training
+    # Augmentations for training
     transform_train = transforms.Compose([
         transforms.RandomResizedCrop(224),
         transforms.RandomHorizontalFlip(),
@@ -14,7 +14,7 @@ def get_loaders():
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-    # Deterministic transform cho calibration/validation
+    # Deterministic transform for calibration/validation
     transform_eval = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.CenterCrop(224),
@@ -22,13 +22,13 @@ def get_loaders():
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-    # load dataset twice with same class ordering; we'll use Subset with same indices
+    # Load dataset twice with same class ordering
     full_dataset_for_idxs = datasets.ImageFolder(root=config.TRAIN_DIR, transform=None)
     class_names = full_dataset_for_idxs.classes
 
     indices = np.arange(len(full_dataset_for_idxs))
 
-    # split indices into train / calib
+    # Split indices into train / calib
     train_idx, cal_idx = train_test_split(
         indices,
         test_size=0.2,

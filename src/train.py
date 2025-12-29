@@ -9,8 +9,8 @@ SMOOTHING = 0.1
 
 def smooth_one_hot(labels, n_classes, smoothing=0.0, device='cpu'):
     """
-    Trả về tensor shape (B, n_classes) chứa smoothed target distribution.
-    smoothing: tổng lượng được phân phối sang các lớp khác (vd. 0.1)
+    Returning tensor shape (B, n_classes) contain smoothed target distribution.
+    Smoothing: Total distribution to other classes (ex. 0.1)
     """
     assert 0.0 <= smoothing < 1.0
     with torch.no_grad():
@@ -32,7 +32,7 @@ def train_model(model, train_loader):
 
     optimizer = torch.optim.Adam(model.parameters(), lr=config.LR)
     
-    print(f"[PROGRESS] Bắt đầu Training...")
+    print(f"[PROGRESS] Begin training...")
     for epoch in range(config.EPOCHS):
         model.train()
         pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}")
@@ -63,4 +63,4 @@ def train_model(model, train_loader):
     model_save_path = model_save_path + ".pth"
     
     torch.save(model.state_dict(), model_save_path)
-    print(f"[SUCCESS] Đã lưu model tại {model_save_path}")
+    print(f"[SUCCESS] Model saved at {model_save_path}")

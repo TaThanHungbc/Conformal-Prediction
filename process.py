@@ -7,12 +7,18 @@ process.py - FastAPI service for predicting a single uploaded image with:
  - infer probabilities and compute conformal prediction set (prob >= 1 - qhat)
 
 Run:
-  uvicorn process:app --host 0.0.0.0 --port 8000
+ - uvicorn process:app --host 0.0.0.0 --port 8000
+ - uvicorn process:app --reload
+
+Frontend:
+ - using swagger
+ - http://127.0.0.1:8000/docs/
+    
 
 Config via environment variables or edit defaults below:
  - MODEL_FILE_NAME  (default: models/fruit_resnet18_1.pth)
  - QHAT_FILE        (default: qhat.txt)
- - TRAIN_DIR        (default: data/Training)
+ - TRAIN_DIR        (default: data/train/train)
 """
 
 import os

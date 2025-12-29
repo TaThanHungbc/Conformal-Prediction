@@ -19,7 +19,7 @@ def run_test(model, qhat, class_names):
     results = []
     
     model.eval()
-    print(f"[PROGRESS] Dự đoán trên {len(test_images)} ảnh test...")
+    print(f"[PROGRESS] Predicting on {len(test_images)} testing images...")
     
     with torch.no_grad():
         for img_name in tqdm(test_images):

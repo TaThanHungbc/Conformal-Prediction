@@ -8,24 +8,28 @@ from src.predict import run_test
 from src.evaluate import evaluate_coverage
 
 def main():
-    # Tạo folder output
+    # Output folder
     if(not os.path.exists("outputs")):
         os.makedirs("outputs")
 
-    # 1. Load Data
+    # Load data
+    # Ref dataset.py
     train_loader, cal_loader, class_names = get_loaders()
 
-    # 2. Build & Train Model
+    # Train model
+    # Ref model.py & train.py
     model = get_model(len(class_names))
     train_model(model, train_loader)
 
-    # 3. Conformal Prediction Calibration
+    # CP Calibration
+    # Ref calibrate.py
     qhat = get_qhat(model, cal_loader)
     with open("outputs/qhat.txt", "w") as f:
         f.write(str(qhat))
-    print(f"[INFO] Ngưỡng qhat xác định: {qhat:.4f}")
+    print(f"[INFO] qhat threshold: {qhat:.4f}")
 
-    # 4. Predict & Evaluate
+    # Prediction and evaluation
+    # Ref predict.py & evaluate.py
     df_results = run_test(model, qhat, class_names)
     evaluate_coverage(df_results)
 
