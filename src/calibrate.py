@@ -1,15 +1,16 @@
+# calibrate.py   (Thay thế toàn bộ file bằng nội dung này)
 import torch
 import torch.nn.functional as F
 import numpy as np
 from tqdm import tqdm
 import src.config as config
 
-# Minimal: set SOFTEN to 1 (no aggressive multiplication).
+# giữ mềm nhẹ: default = 1.0 (không nhân mạnh)
 SOFTEN = 1.0
 
-def optimize_temperature(logits_tensor, labels_tensor, init_logT=0.0, max_iter=200):
+def optimize_temperature(logits_tensor, labels_tensor, init_s=0.0, max_iter=200):
     """
-    Optimize log(T) using LBFGS so that T = exp(logT) > 0.
+    Optimize s where T = 1 + softplus(s) so that T >= 1.
     logits_tensor: torch.Tensor (n, K) on CPU
     labels_tensor: torch.LongTensor (n,)
     Returns scalar T (float)
@@ -17,14 +18,14 @@ def optimize_temperature(logits_tensor, labels_tensor, init_logT=0.0, max_iter=2
     logits = logits_tensor.double()
     labels = labels_tensor.long()
 
-    # optimize logT for positivity
-    logT = torch.tensor([init_logT], requires_grad=True, dtype=torch.float64)
+    # parameter s (unconstrained). T = 1 + softplus(s) ensures T >= 1.
+    s = torch.tensor([init_s], requires_grad=True, dtype=torch.float64)
 
-    optimizer = torch.optim.LBFGS([logT], lr=0.1, max_iter=max_iter)
+    optimizer = torch.optim.LBFGS([s], lr=0.1, max_iter=max_iter)
 
     def closure():
         optimizer.zero_grad()
-        T = torch.exp(logT)
+        T = 1.0 + F.softplus(s)   # guaranteed >= 1
         loss = F.cross_entropy(logits / (T + 1e-12), labels)
         loss.backward()
         return loss
@@ -32,12 +33,14 @@ def optimize_temperature(logits_tensor, labels_tensor, init_logT=0.0, max_iter=2
     try:
         optimizer.step(closure)
     except Exception:
-        # if optimizer fails, fall back to initial T
+        # fallback: do nothing, keep s initial
         pass
 
-    T_opt = float(torch.exp(logT).detach().cpu().numpy()[0])
-    # clamp T to reasonable range to avoid extreme flattening or sharpening
-    T_opt = max(1e-2, min(T_opt, 100.0))
+    with torch.no_grad():
+        T_opt = float((1.0 + F.softplus(s)).detach().cpu().numpy()[0])
+
+    # clamp to a reasonable upper bound to avoid extreme flattening
+    T_opt = max(1.0, min(T_opt, 100.0))
     return T_opt
 
 
@@ -65,24 +68,28 @@ def get_qhat(model, cal_loader):
     logits_all = torch.cat(logits_list, dim=0)  # (n_cal, K)
     labels_all = torch.cat(labels_list, dim=0)  # (n_cal,)
 
-    # Temperature scaling
+    # Temperature scaling (T >= 1 enforced)
     try:
-        print("[PROGRESS] Tối ưu temperature bằng LBFGS (post-hoc calibration)...")
-        T_opt = optimize_temperature(logits_all, labels_all, init_logT=0.0, max_iter=200)
+        print("[PROGRESS] Tối ưu temperature bằng LBFGS (post-hoc calibration) với ràng buộc T>=1...")
+        T_opt = optimize_temperature(logits_all, labels_all, init_s=0.0, max_iter=200)
         print(f"[INFO] Found temperature T = {T_opt:.4f}")
     except Exception as e:
         print(f"[WARN] Temperature optimization failed: {e} - sẽ dùng T=1.0")
         T_opt = 1.0
 
-    # Apply small SOFTEN factor if you want, but default = 1.0 (no aggressive multiply)
+    # Apply optional small SOFTEN (default 1.0)
     T_opt = float(T_opt * SOFTEN)
     print(f"[INFO] Final temperature T = {T_opt:.4f}")
 
-    # compute scaled probabilities (numpy) using stable softmax
+    # compute scaled probabilities (numpy) using stable softmax and clip to avoid exact 0/1
     with torch.no_grad():
         scaled_logits = (logits_all.double() / (float(T_opt) + 1e-12)).numpy()  # (n, K)
         ex = np.exp(scaled_logits - np.max(scaled_logits, axis=1, keepdims=True))
         probs_all = ex / np.sum(ex, axis=1, keepdims=True)  # (n, K)
+
+    # clip tiny numeric extremes
+    eps = 1e-12
+    probs_all = np.clip(probs_all, eps, 1.0 - eps)
 
     # compute calibration scores s = 1 - p_true
     true_probs = probs_all[np.arange(len(labels_all)), labels_all.numpy()]
@@ -92,14 +99,16 @@ def get_qhat(model, cal_loader):
     if n == 0:
         raise RuntimeError("No calibration samples found.")
 
-    # standard conformal quantile index: k = ceil((n+1)*(1-alpha))
+    # compute q_level and quantile robustly
     q_level = np.ceil((n + 1) * (1 - config.ALPHA)) / n
-    q_level = min(float(q_level), 1.0)  # clamp to [0,1]
-    # numpy version differences: prefer method='higher' if available
+    q_level = min(float(q_level), 1.0)
     try:
+        # numpy >= 1.22 uses 'method', older uses 'interpolation'
         qhat = np.quantile(cal_scores, q_level, method='higher')
     except TypeError:
-        # older numpy: fallback to interpolation param
         qhat = np.quantile(cal_scores, q_level, interpolation='higher')
+
+    # avoid exact zero qhat (numerical safety): set small floor
+    qhat = float(max(qhat, 1e-9))
     print(f"[INFO] q_level={q_level:.6f}, qhat={qhat:.6g}")
     return float(qhat)
