@@ -51,7 +51,7 @@ def get_qhat(model, cal_loader):
     model.eval()
     logits_list = []
     labels_list = []
-    print("[PROGRESS] Đang thu thập logits & nhãn từ Calibration set...")
+    print("[PROGRESS] Fetching logits & tags from Calibration set...")
 
     with torch.no_grad():
         for inputs, labels in tqdm(cal_loader, desc="Collecting logits"):
