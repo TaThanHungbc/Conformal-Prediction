@@ -6,7 +6,7 @@ Conformal Prediction (CP) is a distribution-free framework that wraps around any
 
 ---
 
-## 📦 Project Overview
+## Project Overview
 
 The project combines:
 
@@ -18,7 +18,7 @@ The project combines:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Conformal-Prediction/
@@ -34,7 +34,7 @@ Conformal-Prediction/
 
 ---
 
-## 🚀 Features
+## Features
 
 - CNN image classification with PyTorch.
 - Conformal Prediction for multi-class classification.
@@ -48,7 +48,7 @@ Conformal-Prediction/
 
 ---
 
-## 🧠 Conformal Prediction
+## Conformal Prediction
 
 Conformal Prediction provides a statistically valid way to quantify uncertainty. Instead of outputting only one label, the model outputs a **set of labels** that is guaranteed (with probability ≥ 1 − α) to contain the true label under mild assumptions.
 
@@ -56,7 +56,7 @@ This project uses **Inductive Conformal Prediction (ICP)** with softmax probabil
 
 ---
 
-## ⚙️ Installation
+## Installation
 
 ```bash
 git clone https://github.com/TaThanHungbc/Conformal-Prediction
@@ -66,7 +66,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🏃 Running the Backend
+## Running the Backend
 
 ```bash
 uvicorn process:app --host 0.0.0.0 --port 8000
@@ -80,7 +80,7 @@ http://localhost:8000/docs
 
 ---
 
-## 📤 Example API Output
+## Example API Output
 
 ```json
 {
