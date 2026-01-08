@@ -5,7 +5,7 @@ from tqdm import tqdm
 import src.config as config
 
 # Soften: default = 1.0 (optional)
-SOFTEN = 1.0
+SOFTEN = 3.0
 
 def optimize_temperature(logits_tensor, labels_tensor, init_s=0.0, max_iter=200):
     """

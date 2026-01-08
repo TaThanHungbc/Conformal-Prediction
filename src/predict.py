@@ -29,14 +29,23 @@ def run_test(model, qhat, class_names):
             
             probs = F.softmax(model(img_tensor), dim=1).cpu().numpy()[0]
             pred_set_idx = np.where(probs >= (1 - qhat))[0]
-            pred_set_names = [class_names[i] for i in pred_set_idx]
-            
+            # nempty -> fallback argmax
+            if len(pred_set_idx) == 0:
+                arg = int(np.argmax(probs))
+                pred_set_idx = np.array([arg], dtype=int)
+
+            # sort indices by probability desc (nice to have)
+            pred_set_idx = pred_set_idx[np.argsort(-probs[pred_set_idx])]
+            pred_set_names = [class_names[int(i)].strip() for i in pred_set_idx]
+            pred_set_str = "|".join(pred_set_names) if len(pred_set_names) > 0 else ""
+
             results.append({
                 "id": img_name,
-                "label": class_names[np.argmax(probs)],
-                "prediction_set": "|".join(pred_set_names),
+                "label": class_names[int(np.argmax(probs))],
+                "prediction_set": pred_set_str,
                 "set_size": len(pred_set_names)
             })
+
             
     df = pd.DataFrame(results)
     df[['id', 'label']].to_csv('outputs/submission.csv', index=False)

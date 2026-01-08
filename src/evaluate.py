@@ -11,8 +11,13 @@ def evaluate_coverage(df_results):
         compare = df_results.merge(true_df, on='id_clean', suffixes=('_pred', '_true'))
         
         def check_cov(row):
-            sets = [s.strip().lower() for s in str(row['prediction_set']).split('|')]
+            raw = row.get('prediction_set', '')
+            if pd.isna(raw) or str(raw).strip() == '':
+                sets = []
+            else:
+                sets = [s.strip().lower() for s in str(raw).split('|') if s.strip() != ""]
             return str(row['label_true']).strip().lower() in sets
+
 
         coverage = compare.apply(check_cov, axis=1).mean()
         print("\n" + "="*30)
