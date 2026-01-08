@@ -23,11 +23,9 @@ The project combines:
 ```
 Conformal-Prediction/
 │
-├── src/                    # Core conformal prediction utilities
+├── src/                    # Core utilities
 ├── process.py              # FastAPI inference + CP service
 ├── main.py                 # Training / evaluation scripts
-├── calibrate.py            # Compute qhat from calibration set
-├── config.py               # Project configuration
 ├── requirements.txt        # Python dependencies
 └── README.md               # This file
 ```
