@@ -15,4 +15,4 @@ MODEL_SAVE_PATH = "outputs/fruit_resnet18"
 MODEL_FILE_NAME = "fruit_resnet18_1.pth"
 
 MODEL_DIR = "models"
-QHAT_FILE = "qhats1.txt"
+QHAT_FILE = "qhat.txt"

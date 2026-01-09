@@ -1,0 +1,182 @@
+{
+  "argmax": {
+    "label": "Corn",
+    "confidence": 0.8148754835128784
+  },
+  "conformal_set": [
+    {
+      "label": "Corn",
+      "prob": 0.8148754835128784,
+      "prob_pct": "81.49%"
+    }
+  ],
+  "all_probs": [
+    {
+      "label": "Corn",
+      "prob": 0.8148754835128784,
+      "prob_pct": "81.49%"
+    },
+    {
+      "label": "Cactus fruit",
+      "prob": 0.058340318500995636,
+      "prob_pct": "5.83%"
+    },
+    {
+      "label": "Cucumber Ripe",
+      "prob": 0.01791164092719555,
+      "prob_pct": "1.79%"
+    },
+    {
+      "label": "Orange",
+      "prob": 0.012411362491548061,
+      "prob_pct": "1.24%"
+    },
+    {
+      "label": "Pear",
+      "prob": 0.007849101908504963,
+      "prob_pct": "0.78%"
+    },
+    {
+      "label": "Tomato",
+      "prob": 0.0077119083143770695,
+      "prob_pct": "0.77%"
+    },
+    {
+      "label": "Banana",
+      "prob": 0.006114454939961433,
+      "prob_pct": "0.61%"
+    },
+    {
+      "label": "Strawberry",
+      "prob": 0.005985480733215809,
+      "prob_pct": "0.60%"
+    },
+    {
+      "label": "Cherry",
+      "prob": 0.005426545161753893,
+      "prob_pct": "0.54%"
+    },
+    {
+      "label": "Papaya",
+      "prob": 0.005069957114756107,
+      "prob_pct": "0.51%"
+    },
+    {
+      "label": "Mango",
+      "prob": 0.0042927879840135574,
+      "prob_pct": "0.43%"
+    },
+    {
+      "label": "Apple Braeburn",
+      "prob": 0.003862694837152958,
+      "prob_pct": "0.39%"
+    },
+    {
+      "label": "Apricot",
+      "prob": 0.0037482285406440496,
+      "prob_pct": "0.37%"
+    },
+    {
+      "label": "Cantaloupe",
+      "prob": 0.003710421035066247,
+      "prob_pct": "0.37%"
+    },
+    {
+      "label": "Potato Red",
+      "prob": 0.00370805780403316,
+      "prob_pct": "0.37%"
+    },
+    {
+      "label": "Grape Blue",
+      "prob": 0.0036670148838311434,
+      "prob_pct": "0.37%"
+    },
+    {
+      "label": "Lemon",
+      "prob": 0.003525881329551339,
+      "prob_pct": "0.35%"
+    },
+    {
+      "label": "Watermelon",
+      "prob": 0.003110505174845457,
+      "prob_pct": "0.31%"
+    },
+    {
+      "label": "Avocado",
+      "prob": 0.0031026897486299276,
+      "prob_pct": "0.31%"
+    },
+    {
+      "label": "Raspberry",
+      "prob": 0.002845663810148835,
+      "prob_pct": "0.28%"
+    },
+    {
+      "label": "Plum",
+      "prob": 0.002747564809396863,
+      "prob_pct": "0.27%"
+    },
+    {
+      "label": "Apple Granny Smith",
+      "prob": 0.0025055422447621822,
+      "prob_pct": "0.25%"
+    },
+    {
+      "label": "Clementine",
+      "prob": 0.002347244182601571,
+      "prob_pct": "0.23%"
+    },
+    {
+      "label": "Onion White",
+      "prob": 0.0021386398002505302,
+      "prob_pct": "0.21%"
+    },
+    {
+      "label": "Blueberry",
+      "prob": 0.0020478826481848955,
+      "prob_pct": "0.20%"
+    },
+    {
+      "label": "Kiwi",
+      "prob": 0.0017430281732231379,
+      "prob_pct": "0.17%"
+    },
+    {
+      "label": "Passion Fruit",
+      "prob": 0.001723286579363048,
+      "prob_pct": "0.17%"
+    },
+    {
+      "label": "Pineapple",
+      "prob": 0.0016209976747632027,
+      "prob_pct": "0.16%"
+    },
+    {
+      "label": "Pepper Green",
+      "prob": 0.0015271747251972556,
+      "prob_pct": "0.15%"
+    },
+    {
+      "label": "Pomegranate",
+      "prob": 0.0013352509122341871,
+      "prob_pct": "0.13%"
+    },
+    {
+      "label": "Limes",
+      "prob": 0.0011858142679557204,
+      "prob_pct": "0.12%"
+    },
+    {
+      "label": "Peach",
+      "prob": 0.0010875854641199112,
+      "prob_pct": "0.11%"
+    },
+    {
+      "label": "Pepper Red",
+      "prob": 0.0007197264349088073,
+      "prob_pct": "0.07%"
+    }
+  ],
+  "qhat": 0.6976575221287631,
+  "threshold_prob": 0.3023424778712369
+}
